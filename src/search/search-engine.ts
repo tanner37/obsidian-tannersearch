@@ -8,6 +8,7 @@ import {
   type DocumentRef,
   type IndexedDocument,
   type ResultNote,
+  type SearchMatch,
 } from '../globals'
 
 import {

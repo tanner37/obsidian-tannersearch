@@ -1,4 +1,4 @@
-import type { QueryCombination } from 'minisearch'
+import type { Query, QueryCombination } from 'minisearch'
 import { BRACKETS_AND_SPACE, chsRegex, SPACE_OR_PUNCTUATION } from '../globals'
 import { logVerbose, splitCamelCase, splitHyphens } from '../tools/utils'
 import type OmnisearchPlugin from '../main'
@@ -102,7 +102,7 @@ export class Tokenizer {
 
     return {
       combineWith: 'OR',
-      queries: uniqueQueries,
+      queries: uniqueQueries as Query[],
     }
   }
 
