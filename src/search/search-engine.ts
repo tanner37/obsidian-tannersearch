@@ -22,6 +22,8 @@ import { sortBy } from 'lodash-es'
 import type OmnisearchPlugin from '../main'
 import { Tokenizer } from './tokenizer'
 
+const STOP_WORDS = new Set(["a", "an", "the", "and", "or", "but", "if", "in", "on", "at", "by", "for", "with", "to", "from", "of", "is", "it", "that", "this"])
+
 export class SearchEngine {
   private tokenizer: Tokenizer
   private minisearch: MiniSearch
@@ -573,11 +575,20 @@ export class SearchEngine {
         }
         return (doc as any)[fieldName]
       },
-      processTerm: (term: string) =>
-        (this.plugin.settings.ignoreDiacritics
-          ? removeDiacritics(term, this.plugin.settings.ignoreArabicDiacritics)
-          : term
-        ).toLowerCase(),
+      processTerm: (term: string) => {
+        const processedTerm = (
+          this.plugin.settings.ignoreDiacritics
+            ? removeDiacritics(
+                term,
+                this.plugin.settings.ignoreArabicDiacritics
+              )
+            : term
+        ).toLowerCase()
+        if (processedTerm.length < 3 || STOP_WORDS.has(processedTerm)) {
+          return null
+        }
+        return processedTerm
+      },
       idField: 'path',
       fields: [
         'basename',
