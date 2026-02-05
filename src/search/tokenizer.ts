@@ -60,21 +60,39 @@ export class Tokenizer {
   public tokenizeForSearch(text: string): QueryCombination {
     // Extract urls and remove them from the query
     const urls: string[] = markdownLinkExtractor(text)
+    const originalText = text
     text = urls.reduce((acc, url) => acc.replace(url, ''), text)
 
     const tokens = [...this.tokenizeTokens(text), ...urls].filter(Boolean)
 
+    const queries = [
+      { combineWith: 'AND', queries: [originalText] },
+      { combineWith: 'AND', queries: tokens },
+      {
+        combineWith: 'AND',
+        queries: this.tokenizeWords(text).filter(Boolean),
+      },
+      { combineWith: 'AND', queries: tokens.flatMap(splitHyphens) },
+      { combineWith: 'AND', queries: tokens.flatMap(splitCamelCase) },
+    ]
+
+    const nonEmptyQueries = queries.filter(q => q.queries.length > 0)
+
+    // Deduplicate
+    const uniqueQueries = []
+    const seen = new Set()
+    for (const q of nonEmptyQueries) {
+      // sort to make order irrelevant for duplication check
+      const key = JSON.stringify(q.queries.sort())
+      if (!seen.has(key)) {
+        uniqueQueries.push(q)
+        seen.add(key)
+      }
+    }
+
     return {
       combineWith: 'OR',
-      queries: [
-        { combineWith: 'AND', queries: tokens },
-        {
-          combineWith: 'AND',
-          queries: this.tokenizeWords(text).filter(Boolean),
-        },
-        { combineWith: 'AND', queries: tokens.flatMap(splitHyphens) },
-        { combineWith: 'AND', queries: tokens.flatMap(splitCamelCase) },
-      ],
+      queries: uniqueQueries,
     }
   }
 
