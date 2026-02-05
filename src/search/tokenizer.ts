@@ -5,6 +5,8 @@ import type OmnisearchPlugin from '../main'
 
 const markdownLinkExtractor = require('markdown-link-extractor')
 
+const STOP_WORDS = new Set(["a", "an", "the", "and", "or", "but", "if", "in", "on", "at", "by", "for", "with", "to", "from", "of", "is", "it", "that", "this"])
+
 export class Tokenizer {
   constructor(private plugin: OmnisearchPlugin) {}
 
@@ -65,6 +67,11 @@ export class Tokenizer {
 
     const tokens = [...this.tokenizeTokens(text), ...urls].filter(Boolean)
 
+    const isStopWord = (term: string): boolean => {
+      const lower = term.toLowerCase()
+      return lower.length < 3 || STOP_WORDS.has(lower)
+    }
+
     const queries = [
       { combineWith: 'AND', queries: [originalText] },
       { combineWith: 'AND', queries: tokens },
@@ -74,7 +81,10 @@ export class Tokenizer {
       },
       { combineWith: 'AND', queries: tokens.flatMap(splitHyphens) },
       { combineWith: 'AND', queries: tokens.flatMap(splitCamelCase) },
-    ]
+    ].map(q => ({
+      ...q,
+      queries: q.queries.filter(t => !isStopWord(t)),
+    }))
 
     const nonEmptyQueries = queries.filter(q => q.queries.length > 0)
 
