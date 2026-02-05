@@ -64,7 +64,6 @@ export class TextProcessor {
     words: string[],
     query?: Query
   ): SearchMatch[] {
-    words = words.map(escapeHTML)
     const reg = this.stringsToRegex(words)
     const originalText = text
     // text = text.toLowerCase().replace(new RegExp(SEPARATORS, 'gu'), ' ')
