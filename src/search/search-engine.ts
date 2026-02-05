@@ -481,6 +481,15 @@ export class SearchEngine {
         query
       )
 
+      let bestMatch: SearchMatch | undefined
+      if (
+        matches.length > 0 &&
+        query.getBestStringForExcerpt() &&
+        matches[0].match.toLowerCase() === query.getBestStringForExcerpt()
+      ) {
+        bestMatch = matches.shift()
+      }
+
       const lowerCaseBasename = note.basename.toLowerCase()
       const titleMatchWord = foundWords.find(word =>
         lowerCaseBasename.includes(word.toLowerCase())
@@ -512,6 +521,10 @@ export class SearchEngine {
           }
           matches = [...headingMatches, ...otherMatches]
         }
+      }
+
+      if (bestMatch) {
+        matches.unshift(bestMatch)
       }
 
       logVerbose(`Matches for note "${note.path}"`, matches)

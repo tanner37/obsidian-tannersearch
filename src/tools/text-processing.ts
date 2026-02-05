@@ -95,11 +95,16 @@ export class TextProcessor {
       query &&
       (query.query.text.length > 1 || query.getExactTerms().length > 0)
     ) {
-      const best = text.indexOf(query.getBestStringForExcerpt())
-      if (best > -1 && matches.find(m => m.offset === best)) {
+      const bestMatchStr = query.getBestStringForExcerpt()
+      const best = text.toLowerCase().indexOf(bestMatchStr)
+      if (best > -1) {
+        // We found the full query. We make it the first result, and remove any other match that it contains.
+        matches = matches.filter(
+          m => m.offset < best || m.offset >= best + bestMatchStr.length
+        )
         matches.unshift({
           offset: best,
-          match: query.getBestStringForExcerpt(),
+          match: originalText.substring(best, best + bestMatchStr.length),
         })
       }
     }
