@@ -1,22 +1,35 @@
-# Omnisearch for Obsidian
+# Tannersearch for Obsidian
 
-[![Sponsor me](https://img.shields.io/badge/%E2%9D%A4%20Like%20this%20plugin%3F-Sponsor%20me!-ff69b4)](https://github.com/sponsors/scambier)  
-![Obsidian plugin](https://img.shields.io/endpoint?url=https%3A%2F%2Fscambier.xyz%2Fobsidian-endpoints%2Fomnisearch.json)
-![GitHub release (latest by date and asset)](https://img.shields.io/github/downloads/scambier/obsidian-omnisearch/latest/main.js)  
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/scambier/obsidian-omnisearch)
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/scambier/obsidian-omnisearch?include_prereleases&label=BRAT%20beta)
+This is a fork of [obsidian-omnisearch](https://github.com/scambier/obsidian-omnisearch) by [@scambier](https://github.com/scambier) with the following changes:
 
-> 🏆 Winner of the _[2023 Gems of the Year](https://obsidian.md/blog/2023-goty-winners/)_ in the "Existing plugin" category 🏆
+- when opening a result, the cursor placement offset prioritizes note titles, headings, then content
+  - this means if the note's name matches your search, it opens at the top
+- search terms aren't split on apostrophes
+  - searching for "Sun's BBQ" searches for ["Sun's", "BBQ"] instead of ["Sun", "s", "BBQ"]
+- searches aren't HTML escaped
+  - before searching for "Sun's BBQ" would actually search for `Sun&#039;s BBQ`
+- search terms less than 3 characters long or common words are ignored
+  - ignored words: "a", "an", "the", "and", "or", "but", "if", "in", "on", "at", "by", "for", "with", "to", "from", "of", "is", "it", "that", "this"
+- the first line of a paragraph is ranked like Heading 3 if it ends in a colon
+  - for example,
+
+```
+Japan trip:
+- passport
+- cash
+- umbrella
+```
+
+... "Japan trip:" is indexed and ranked the same as "### Japan trip"
 
 
----
+
+# Original README
 
 **Omnisearch** is a search engine that "_just works_".  
 It always instantly shows you the most relevant results, thanks to its smart weighting algorithm.
 
 Under the hood, it uses the excellent [MiniSearch](https://github.com/lucaong/minisearch) library. This free plugin is totally unrelated to the omnisearch.ai paid product.
-
-![](https://raw.githubusercontent.com/scambier/obsidian-omnisearch/master/images/omnisearch.gif)
 
 ## Documentation
 
@@ -72,5 +85,3 @@ Omnisearch is licensed under [GPL-3](https://tldrlegal.com/license/gnu-general-p
 
 To all people who donate through [Ko-Fi](https://ko-fi.com/scambier)
 or [Github Sponsors](https://github.com/sponsors/scambier) ❤
-
-![JetBrains logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)
