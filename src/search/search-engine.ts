@@ -484,6 +484,7 @@ export class SearchEngine {
       let bestMatch: SearchMatch | undefined
       if (
         matches.length > 0 &&
+        (query.query.text.length > 1 || query.getExactTerms().length > 0) &&
         query.getBestStringForExcerpt() &&
         matches[0].match.toLowerCase() === query.getBestStringForExcerpt()
       ) {
