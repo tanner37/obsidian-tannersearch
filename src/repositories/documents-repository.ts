@@ -229,6 +229,28 @@ export class DocumentsRepository {
         metadata?.frontmatter?.[this.plugin.settings.displayTitle] ?? ''
     }
     const tags = getTagsFromMetadata(metadata)
+    const headings1 = metadata ? extractHeadingsFromCache(metadata, 1) : []
+    const headings2 = metadata ? extractHeadingsFromCache(metadata, 2) : []
+    const headings3 = metadata ? extractHeadingsFromCache(metadata, 3) : []
+
+    const lines = content.split('\n')
+    const colonHeadings: string[] = []
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim()
+      if (line.endsWith(':')) {
+        const prevLine = i > 0 ? lines[i - 1].trim() : null
+        const nextLine = i < lines.length - 1 ? lines[i + 1].trim() : null
+
+        if (
+          prevLine === '' &&
+          nextLine !== null &&
+          nextLine !== ''
+        ) {
+          colonHeadings.push(line.slice(0, -1).trim())
+        }
+      }
+    }
+
     return {
       basename: file.basename,
       displayTitle,
@@ -241,15 +263,9 @@ export class DocumentsRepository {
       tags: tags,
       unmarkedTags: tags.map(t => t.replace('#', '')),
       aliases: getAliasesFromMetadata(metadata).join(''),
-      headings1: metadata
-        ? extractHeadingsFromCache(metadata, 1).join(' ')
-        : '',
-      headings2: metadata
-        ? extractHeadingsFromCache(metadata, 2).join(' ')
-        : '',
-      headings3: metadata
-        ? extractHeadingsFromCache(metadata, 3).join(' ')
-        : '',
+      headings1: headings1.join(' '),
+      headings2: headings2.join(' '),
+      headings3: [...headings3, ...colonHeadings].join(' '),
     }
   }
 }
