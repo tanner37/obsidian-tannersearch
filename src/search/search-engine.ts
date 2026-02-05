@@ -475,11 +475,45 @@ export class SearchEngine {
       logVerbose('Matching tokens:', foundWords)
 
       logVerbose('Getting matches locations...')
-      const matches = this.plugin.textProcessor.getMatches(
+      let matches = this.plugin.textProcessor.getMatches(
         note.content,
         foundWords,
         query
       )
+
+      const lowerCaseBasename = note.basename.toLowerCase()
+      const titleMatchWord = foundWords.find(word =>
+        lowerCaseBasename.includes(word.toLowerCase())
+      )
+
+      if (titleMatchWord) {
+        // If there's a match in the title, make it the first result with offset 0
+        // And remove any other match with offset 0 to avoid duplicates if the title is at the top of the file
+        matches = matches.filter(m => m.offset !== 0)
+        matches.unshift({ match: titleMatchWord, offset: 0 })
+      } else {
+        // If no title match, check for header matches and move them to the front
+        const headings =
+          this.plugin.app.metadataCache.getCache(note.path)?.headings ?? []
+        if (headings.length > 0) {
+          const headingMatches: SearchMatch[] = []
+          const otherMatches: SearchMatch[] = []
+          for (const match of matches) {
+            const isHeadingMatch = headings.some(
+              h =>
+                match.offset >= h.position.start.offset &&
+                match.offset < h.position.end.offset
+            )
+            if (isHeadingMatch) {
+              headingMatches.push(match)
+            } else {
+              otherMatches.push(match)
+            }
+          }
+          matches = [...headingMatches, ...otherMatches]
+        }
+      }
+
       logVerbose(`Matches for note "${note.path}"`, matches)
       const resultNote: ResultNote = {
         score: result.score,
