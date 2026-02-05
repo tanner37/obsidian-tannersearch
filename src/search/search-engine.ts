@@ -492,6 +492,7 @@ export class SearchEngine {
     })
 
     logVerbose('Suggestions:', resultNotes)
+    console.log('Omnisearch search results:', resultNotes)
 
     return resultNotes
   }
