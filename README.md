@@ -33,8 +33,41 @@ Aka: packing list
 content
 ```
 
-... "packing list" is indexed and ranged the same as "# packing list". Note that "Aka:" isn't case or colon sensitive.
+... "packing list" is indexed and ranked the same as "# packing list". Note that "Aka:" isn't case or colon sensitive.
 
+
+### Fork Installation
+
+Ensure the original Omnisearch plugin is installed, see instructions below.
+
+Download main.js into your `.obsidian/plugins/omnisearch` directory, example:
+
+```
+$ cd ~/notes/.obsidian/plugins/omnisearch
+$ mv main.js main.js.bak
+$ wget https://raw.githubusercontent.com/tanner37/obsidian-tannersearch/refs/heads/master/dist/main.js
+```
+
+In Obsidian, open Settings > Community Plugings. Disable and enable Omnisearch.
+
+Open Settings > Omnisearch. Scroll to bottom. Click "Clear cache" data.
+
+Restart Obsidian.
+
+Note: on mobile you'll have to use some sort of sync or downloader and move the main.js over to your vault.
+
+### Building the Fork
+
+If you'd rather build the fork yourself:
+
+```
+$ git clone https://github.com/tanner37/obsidian-tannersearch.git
+$ cd obsidian-tannersearch/
+$ npm install --legacy-peer-deps
+$ npm run build
+```
+
+Then copy `dist/main.js` as above.
 
 
 
