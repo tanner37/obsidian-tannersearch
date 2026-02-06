@@ -236,7 +236,7 @@ export class DocumentsRepository {
     const akaHeadings: string[] = content
       .split(/\n\s*\n/)[0]
       .split('\n')
-      .map(line => line.match(/^\s*aka\s*:?\s*(.+)$/i)?.[1]?.trim())
+      .map(line => line.match(/^aka:?\s*(.+)$/i)?.[1]?.trim())
       .filter((heading): heading is string => !!heading)
 
     const lines = content.split('\n')
