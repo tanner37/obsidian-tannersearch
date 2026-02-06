@@ -233,6 +233,12 @@ export class DocumentsRepository {
     const headings2 = metadata ? extractHeadingsFromCache(metadata, 2) : []
     const headings3 = metadata ? extractHeadingsFromCache(metadata, 3) : []
 
+    const akaHeadings: string[] = content
+      .split(/\n\s*\n/)[0]
+      .split('\n')
+      .map(line => line.match(/^\s*aka\s*:?\s*(.+)$/i)?.[1]?.trim())
+      .filter((heading): heading is string => !!heading)
+
     const lines = content.split('\n')
     const colonHeadings: string[] = []
     for (let i = 0; i < lines.length; i++) {
@@ -263,7 +269,7 @@ export class DocumentsRepository {
       tags: tags,
       unmarkedTags: tags.map(t => t.replace('#', '')),
       aliases: getAliasesFromMetadata(metadata).join(''),
-      headings1: headings1.join(' '),
+      headings1: [...headings1, ...akaHeadings].join(' '),
       headings2: headings2.join(' '),
       headings3: [...headings3, ...colonHeadings].join(' '),
     }
