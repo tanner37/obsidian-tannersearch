@@ -1,17 +1,18 @@
 # Tannersearch for Obsidian
 
-This is a fork of [obsidian-omnisearch](https://github.com/scambier/obsidian-omnisearch) by [@scambier](https://github.com/scambier) with the following changes:
+This is a fork of [obsidian-omnisearch](https://github.com/scambier/obsidian-omnisearch) (by [@scambier](https://github.com/scambier)) with the following changes:
 
-- when opening a result, the cursor placement offset prioritizes note titles, headings, then content
-  - this means if the note's name matches your search, it opens at the top
-- search terms aren't split on apostrophes
-  - searching for "Sun's BBQ" searches for ["Sun's", "BBQ"] instead of ["Sun", "s", "BBQ"]
-- searches aren't HTML escaped
-  - before searching for "Sun's BBQ" would actually search for `Sun&#039;s BBQ`
-- search terms less than 3 characters long or common words are ignored
-  - ignored words: "a", "an", "the", "and", "or", "but", "if", "in", "on", "at", "by", "for", "with", "to", "from", "of", "is", "it", "that", "this"
-- the first line of a paragraph is ranked like Heading 3 if it ends in a colon
-  - for example,
+When opening a result, the cursor placement prioritizes note titles over headings over content
+- this means if the note's name matches your search, it opens at the top instead of on a random match in the middle of the note
+
+Search terms aren't split on apostrophes
+- searching for "Sun's BBQ" searches for ["Sun's", "BBQ"] instead of ["Sun", "s", "BBQ"]
+
+Search terms less than 3 characters long or common words are ignored
+- ignored words: "a", "an", "the", "and", "or", "but", "if", "in", "on", "at", "by", "for", "with", "to", "from", "of", "is", "it", "that", "this"
+
+The first line of a paragraph is ranked like Heading 3 if it ends in a colon
+- for example,
 
 ```
 Japan trip:
@@ -21,6 +22,19 @@ Japan trip:
 ```
 
 ... "Japan trip:" is indexed and ranked the same as "### Japan trip"
+
+If the first paragraph of a note contains a line like "aka other name", then "other name" is ranked like H1
+- for example,
+
+```
+see also: [[Travel General]]
+Aka: packing list
+
+content
+```
+
+... "packing list" is indexed and ranged the same as "# packing list". Note that "Aka:" isn't case or colon sensitive.
+
 
 
 
