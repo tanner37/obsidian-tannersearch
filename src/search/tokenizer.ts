@@ -41,7 +41,7 @@ export class Tokenizer {
       }
 
       // Remove duplicates
-      // tokens = [...new Set(tokens)]
+      tokens = [...new Set(tokens)]
       
       // Remove empty tokens
       tokens = tokens.filter(Boolean)
@@ -107,7 +107,9 @@ export class Tokenizer {
   }
 
   private tokenizeWords(text: string, { skipChs = false } = {}): string[] {
-    const tokens = text.split(BRACKETS_AND_SPACE)
+    const tokens = text
+      .split(BRACKETS_AND_SPACE)
+      .map(t => t.replace(/[.,:;!?]+$/, ''))
     if (skipChs) return tokens
     return this.tokenizeChsWord(tokens)
   }
