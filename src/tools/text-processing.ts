@@ -84,9 +84,16 @@ export class TextProcessor {
       }
       const matchStartIndex = match.index
       const matchEndIndex = matchStartIndex + match[0].length
-      const originalMatch = originalText
-        .substring(matchStartIndex, matchEndIndex)
-        .trim()
+
+      // If `ignoreDiacritics` is on, `text` may have a different length than `originalText`,
+      // making `match.index` unreliable for `originalText`.
+      // We use `match[0]`, which is the matched term (but without diacritics).
+      const originalMatchBeforeTrim = this.plugin.settings.ignoreDiacritics
+        ? match[0]
+        : originalText.substring(matchStartIndex, matchEndIndex)
+
+      const originalMatch = originalMatchBeforeTrim.trim()
+
       if (originalMatch && match.index >= 0) {
         matches.push({ match: originalMatch, offset: match.index })
       }
