@@ -11,6 +11,10 @@ Search terms aren't split on apostrophes
 Search terms less than 3 characters long or common words are ignored
 - ignored words: "a", "an", "the", "and", "or", "but", "if", "in", "on", "at", "by", "for", "with", "to", "from", "of", "is", "it", "that", "this"
 
+Excerpt highlighting fixes
+- words with apostrophes weren't being highlighted
+- excerpt with blank lines were sometimes shown incorrectly
+
 The first line of a paragraph is ranked like Heading 3 if it ends in a colon
 - for example,
 
@@ -48,7 +52,7 @@ $ mv main.js main.js.bak
 $ wget https://raw.githubusercontent.com/tanner37/obsidian-tannersearch/refs/heads/master/dist/main.js
 ```
 
-In Obsidian, open Settings > Community Plugings. Disable and enable Omnisearch.
+In Obsidian, open Settings > Community Plugins. Disable and enable Omnisearch.
 
 Open Settings > Omnisearch. Scroll to bottom. Click "Clear cache" data.
 
