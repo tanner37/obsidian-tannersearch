@@ -47,7 +47,7 @@ export class TextProcessor {
     strings.sort((a, b) => b.length - a.length)
 
     const joined = `(${strings
-      .map(s => `\\b${escapeRegExp(s)}\\b|${escapeRegExp(s)}`)
+      .map(s => `(?<!\\w)${escapeRegExp(s)}(?!\\w)`)
       .join('|')})`
 
     return new RegExp(`${joined}`, 'gui')
