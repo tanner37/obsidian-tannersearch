@@ -14,6 +14,7 @@ Search terms less than 3 characters long or common words are ignored
 Excerpt highlighting fixes
 - words with apostrophes weren't being highlighted
 - excerpt with blank lines were sometimes shown incorrectly
+- fixed match index calculations when diacritics were removed
 
 The first line of a paragraph is ranked like Heading 3 if it ends in a colon
 - for example,
