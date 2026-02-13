@@ -128,18 +128,18 @@ export class TextProcessor {
         content = content.slice(0, excerptAfter)
       }
       if (settings.renderLineReturnInExcerpts) {
+        const last = content.lastIndexOf('\n', pos - from)
+
+        if (last > 0) {
+          content = content.slice(last)
+        }
+
         const lineReturn = new RegExp(/(?:\r\n|\r|\n)/g)
         // Remove multiple line returns
         content = content
           .split(lineReturn)
           .filter(l => l)
           .join('\n')
-
-        const last = content.lastIndexOf('\n', pos - from)
-
-        if (last > 0) {
-          content = content.slice(last)
-        }
       }
 
       content = escapeHTML(content)
