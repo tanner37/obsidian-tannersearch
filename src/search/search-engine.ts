@@ -166,6 +166,7 @@ export class SearchEngine {
     logVerbose(JSON.stringify(searchTokens, null, 1))
     let results = this.minisearch.search(searchTokens, {
       prefix: term => term.length >= options.prefixLength,
+      bm25: {b: 0.7, d: 0.5, k: 1.2},
       // length <= 3: no fuzziness
       // length <= 5: fuzziness of 10%
       // length > 5: fuzziness of 20%
