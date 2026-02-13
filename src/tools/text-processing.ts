@@ -25,7 +25,9 @@ export class TextProcessor {
     try {
       return text.replace(
         new RegExp(
-          `(${matches.map(item => escapeRegExp(item.match)).join('|')})`,
+          `(${matches
+            .map(item => escapeRegExp(escapeHTML(item.match)))
+            .join('|')})`,
           'giu'
         ),
         `<span class="${highlightClass}">$1</span>`
