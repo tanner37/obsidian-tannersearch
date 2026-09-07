@@ -8,7 +8,8 @@
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "version": "node version-bump.mjs",
-    "test": "jest"
+    "test": "jest",
+    "tui": "node tools/search-tui-launcher.js"
   },
   "keywords": [],
   "author": "Simon Cambier",

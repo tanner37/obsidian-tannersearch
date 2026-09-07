@@ -26,7 +26,7 @@ export class TextProcessor {
       return text.replace(
         new RegExp(
           `(${matches
-            .map(item => escapeRegExp(escapeHTML(item.match)))
+            .map(item => escapeRegExp(item.match))
             .join('|')})`,
           'giu'
         ),
@@ -72,13 +72,41 @@ export class TextProcessor {
     if (this.plugin.settings.ignoreDiacritics) {
       text = removeDiacritics(text, this.plugin.settings.ignoreArabicDiacritics)
     }
-    const startTime = new Date().getTime()
     let match: RegExpExecArray | null = null
     let matches: SearchMatch[] = []
     let count = 0
+
+    // Build the normalized-to-original offset map once. Re-normalizing every
+    // prefix for every match becomes extremely expensive in large notes.
+    const normalizedToOriginal: number[] = [0]
+    if (this.plugin.settings.ignoreDiacritics) {
+      for (let index = 0; index < originalText.length;) {
+        const codePoint = String.fromCodePoint(originalText.codePointAt(index)!)
+        const normalized = removeDiacritics(
+          codePoint,
+          this.plugin.settings.ignoreArabicDiacritics
+        )
+        const normalizedStart = normalizedToOriginal.length - 1
+        for (let offset = 0; offset < normalized.length; offset++) {
+          normalizedToOriginal[normalizedStart + offset] = index
+        }
+        normalizedToOriginal.push(index + codePoint.length)
+        index += codePoint.length
+      }
+    }
+
+    const originalOffset = (normalizedOffset: number): number => {
+      if (!this.plugin.settings.ignoreDiacritics) return normalizedOffset
+      if (normalizedOffset <= 0) return 0
+      return normalizedToOriginal[Math.min(normalizedOffset, normalizedToOriginal.length - 1)] ?? originalText.length
+    }
+
     while ((match = reg.exec(text)) !== null) {
-      // Avoid infinite loops, stop looking after 100 matches or if we're taking too much time
-      if (++count >= 100 || new Date().getTime() - startTime > 50) {
+      // Avoid infinite loops and unbounded result lists.
+      // The regex scan is linear and the 100-match cap keeps large notes safe;
+      // a wall-clock cutoff can incorrectly discard a valid late match in
+      // very large notes.
+      if (++count >= 100) {
         warnVerbose('Stopped getMatches at', count, 'results')
         break
       }
@@ -88,9 +116,13 @@ export class TextProcessor {
       // If `ignoreDiacritics` is on, `text` may have a different length than `originalText`,
       // making `match.index` unreliable for `originalText`.
       // We use `match[0]`, which is the matched term (but without diacritics).
-      const originalMatchBeforeTrim = this.plugin.settings.ignoreDiacritics
-        ? match[0]
-        : originalText.substring(matchStartIndex, matchEndIndex)
+      // Match offsets refer to the normalized string. Translate both ends
+      // back to the original text so excerpts and highlighting retain
+      // diacritics, without repeatedly normalizing large prefixes.
+      const originalMatchBeforeTrim = originalText.substring(
+        originalOffset(matchStartIndex),
+        originalOffset(matchEndIndex)
+      )
 
       const originalMatch = originalMatchBeforeTrim.trim()
 

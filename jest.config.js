@@ -82,7 +82,11 @@ module.exports = {
   ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    '^obsidian$': '<rootDir>/tests/obsidian-mock.ts',
+    '^svelte/store$': '<rootDir>/tests/svelte-store-mock.ts',
+    '^lodash-es$': 'lodash',
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
