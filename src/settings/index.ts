@@ -125,12 +125,12 @@ export function getDefaultSettings(app: App): OmnisearchSettings {
     fuzziness: '1',
 
     weightBasename: 10,
-    weightDirectory: 7,
-    weightH1: 6,
-    weightH2: 5,
-    weightH3: 4,
-    weightH4: 3,
-    weightColonHeadings: 2,
+    weightDirectory: 8,
+    weightH1: 7,
+    weightH2: 6,
+    weightH3: 5,
+    weightH4: 4,
+    weightColonHeadings: 3,
     weightUnmarkedTags: 2,
     weightCustomProperties: [] as { name: string; weight: number }[],
 

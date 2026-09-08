@@ -16,7 +16,7 @@ export function injectSettingsWeighting(
     cb: SliderComponent,
     key: keyof WeightingSettings
   ): void {
-    cb.setLimits(1, 10, 0.5)
+    cb.setLimits(1, 20, 0.5)
       .setValue(settings[key])
       .setDynamicTooltip()
       .onChange(async v => {
