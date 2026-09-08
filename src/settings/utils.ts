@@ -18,6 +18,8 @@ export interface WeightingSettings {
   weightH1: number
   weightH2: number
   weightH3: number
+  weightH4: number
+  weightColonHeadings: number
   weightUnmarkedTags: number
 }
 export function isPluginDisabled(app: App): boolean {

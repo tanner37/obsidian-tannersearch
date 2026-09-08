@@ -232,6 +232,7 @@ export class DocumentsRepository {
     const headings1 = metadata ? extractHeadingsFromCache(metadata, 1) : []
     const headings2 = metadata ? extractHeadingsFromCache(metadata, 2) : []
     const headings3 = metadata ? extractHeadingsFromCache(metadata, 3) : []
+    const headings4 = metadata ? extractHeadingsFromCache(metadata, 4) : []
 
     const akaHeadings: string[] = content
       .split(/\n\s*\n/)[0]
@@ -271,7 +272,9 @@ export class DocumentsRepository {
       aliases: getAliasesFromMetadata(metadata).join(''),
       headings1: [...headings1, ...akaHeadings].join(' '),
       headings2: headings2.join(' '),
-      headings3: [...headings3, ...colonHeadings].join(' '),
+      headings3: headings3.join(' '),
+      headings4: headings4.join(' '),
+      colonHeadings: colonHeadings.join(' '),
     }
   }
 }

@@ -129,6 +129,8 @@ export function getDefaultSettings(app: App): OmnisearchSettings {
     weightH1: 6,
     weightH2: 5,
     weightH3: 4,
+    weightH4: 3,
+    weightColonHeadings: 2,
     weightUnmarkedTags: 2,
     weightCustomProperties: [] as { name: string; weight: number }[],
 

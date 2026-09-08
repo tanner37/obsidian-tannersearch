@@ -64,6 +64,8 @@ export type IndexedDocument = {
   headings1: string
   headings2: string
   headings3: string
+  headings4: string
+  colonHeadings: string
 
   // TODO: reimplement this
   doesNotExist?: boolean

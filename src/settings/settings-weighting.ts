@@ -52,6 +52,14 @@ export function injectSettingsWeighting(
     .addSlider(cb => weightSlider(cb, 'weightH3'))
 
   new Setting(containerEl)
+    .setName(`Headings level 4 (default: ${defaultSettings.weightH4})`)
+    .addSlider(cb => weightSlider(cb, 'weightH4'))
+
+  new Setting(containerEl)
+    .setName(`Colon headings (default: ${defaultSettings.weightColonHeadings})`)
+    .addSlider(cb => weightSlider(cb, 'weightColonHeadings'))
+
+  new Setting(containerEl)
     .setName(`Tags (default: ${defaultSettings.weightUnmarkedTags})`)
     .addSlider(cb => weightSlider(cb, 'weightUnmarkedTags'))
 

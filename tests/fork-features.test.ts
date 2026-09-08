@@ -132,13 +132,16 @@ describe('indexed heading metadata', () => {
     expect(headings.headings1).toBe('H1 Heading')
     expect(headings.headings2).toBe('H2 Heading')
     expect(headings.headings3).toBe('H3 Heading')
+    expect(headings.headings4).toBe('H4 Heading')
 
     const fork = await getDocument('tests/notes/fork-features.md')
     expect(fork.headings1).toBe('Packing List')
-    expect(fork.headings3).toBe('Japan trip')
+    expect(fork.headings3).toBe('')
+    expect(fork.colonHeadings).toBe('Japan trip')
 
     const colon = await getDocument('tests/notes/colon-variants.md')
-    expect(colon.headings3).toBe('Colon heading')
+    expect(colon.headings3).toBe('')
+    expect(colon.colonHeadings).toBe('Colon heading')
 
     const aka = await getDocument('tests/notes/aka-variants.md')
     expect(aka.headings1).toBe('lowercase alias')

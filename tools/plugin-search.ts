@@ -9,7 +9,7 @@ type Note = { path: string; basename: string; text: string }
 
 const defaults: any = {
   fuzziness: '1', weightBasename: 10, weightDirectory: 7, weightH1: 6,
-  weightH2: 5, weightH3: 4, weightUnmarkedTags: 2, recencyBoost: '0',
+  weightH2: 5, weightH3: 4, weightH4: 3, weightColonHeadings: 2, weightUnmarkedTags: 2, recencyBoost: '0',
   downrankedFoldersFilters: [], hideExcluded: false, weightCustomProperties: [],
   ignoreDiacritics: true, ignoreArabicDiacritics: false, simpleSearch: false,
   maxEmbeds: 5, renderLineReturnInExcerpts: true, highlight: true,
@@ -36,7 +36,7 @@ function indexDocument(note: Note): IndexedDocument {
     path: note.path, basename: note.basename, displayTitle: '', mtime: 1,
     content: note.text, cleanedContent: note.text, aliases: '', tags: [],
     unmarkedTags: [], headings1: headings1.join(' '), headings2: headings2.join(' '),
-    headings3: headings3.join(' '),
+    headings3: headings3.join(' '), headings4: '', colonHeadings: '',
   }
 }
 

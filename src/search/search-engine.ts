@@ -180,6 +180,8 @@ export class SearchEngine {
         headings1: settings.weightH1,
         headings2: settings.weightH2,
         headings3: settings.weightH3,
+        headings4: settings.weightH4,
+        colonHeadings: settings.weightColonHeadings,
         tags: settings.weightUnmarkedTags,
         unmarkedTags: settings.weightUnmarkedTags,
       },
@@ -601,6 +603,8 @@ export class SearchEngine {
         'headings1',
         'headings2',
         'headings3',
+        'headings4',
+        'colonHeadings',
       ],
       storeFields: ['tags', 'mtime'],
       logger(_level, _message, code) {
